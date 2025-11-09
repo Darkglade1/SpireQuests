@@ -49,7 +49,7 @@ public class QuestBoardProp {
         sb.draw(sprite, DRAW_X, DRAW_Y, sprite.getWidth() * Settings.scale, sprite.getHeight() * Settings.scale);
         if (this.hb.hovered) {
             sb.setBlendFunction(770, 1);
-            sb.setColor(Settings.HALF_TRANSPARENT_WHITE_COLOR);
+            sb.setColor(Color.GOLD);
             sb.draw(sprite, DRAW_X, DRAW_Y, sprite.getWidth() * Settings.scale, sprite.getHeight() * Settings.scale);
             sb.setBlendFunction(770, 771);
         }
