@@ -10,6 +10,8 @@ import com.megacrit.cardcrawl.dungeons.AbstractDungeon;
 import com.megacrit.cardcrawl.helpers.Hitbox;
 import com.megacrit.cardcrawl.helpers.controller.CInputActionSet;
 import com.megacrit.cardcrawl.helpers.input.InputHelper;
+import spireQuests.quests.AbstractQuest;
+import spireQuests.quests.example.TestQuest;
 import spireQuests.util.TexLoader;
 
 import java.util.ArrayList;
@@ -20,25 +22,25 @@ public class QuestBoardProp {
     public static final float DRAW_X;
     public static final float DRAW_Y;
     public Hitbox hb;
-    private ArrayList<AbstractCard> cards1;
+    private ArrayList<AbstractQuest> quests;
     protected static final String questBoardPropImagePath = makeUIPath("bulletin_board.png");
     private Texture sprite;
 
     public QuestBoardProp() {
-        this(0.0F, 0.0F, 1);
-    }
-
-    public QuestBoardProp(float x, float y, int newShopScreen) {
-        this.cards1 = new ArrayList();
+        this.quests = new ArrayList<>();
+        // TODO select 3 random quests, 1 easy/normal, 1 hard/challenging, and 1 from any difficulty
+        this.quests.add(new TestQuest());
+        this.quests.add(new TestQuest());
+        this.quests.add(new TestQuest());
         this.sprite = TexLoader.getTexture(questBoardPropImagePath);
         this.hb = new Hitbox(sprite.getWidth() * Settings.xScale, sprite.getHeight() * Settings.yScale);
         this.hb.move(DRAW_X + ((float) sprite.getWidth() / 2) * Settings.scale, DRAW_Y + ((float) sprite.getHeight() / 2) * Settings.scale);
-        //AbstractDungeon.shopScreen.init(this.cards1, this.cards2);
     }
 
     public void update() {
         this.hb.update();
         if ((this.hb.hovered && InputHelper.justClickedLeft || CInputActionSet.select.isJustPressed()) && !AbstractDungeon.isScreenUp && !AbstractDungeon.isFadingOut && !AbstractDungeon.player.viewingRelics) {
+            QuestBoardScreen.init(quests);
             BaseMod.openCustomScreen(QuestBoardScreen.Enum.QUEST_BOARD);
             this.hb.hovered = false;
         }

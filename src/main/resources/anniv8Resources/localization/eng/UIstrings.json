@@ -16,7 +16,7 @@
   "${ModID}:QuestBoard": {
     "TEXT": [
       "Cancel",
-      "",
+      "Pick up Quest",
       ""
     ]
   }

@@ -10,7 +10,10 @@ import com.evacipated.cardcrawl.modthespire.lib.SpireEnum;
 import com.megacrit.cardcrawl.core.CardCrawlGame;
 import com.megacrit.cardcrawl.core.Settings;
 import com.megacrit.cardcrawl.dungeons.AbstractDungeon;
+import spireQuests.quests.AbstractQuest;
 import spireQuests.util.TexLoader;
+
+import java.util.ArrayList;
 
 import static spireQuests.Anniv8Mod.makeUIPath;
 
@@ -19,7 +22,7 @@ public class QuestBoardScreen extends CustomScreen {
     public static final String[] TEXT = CardCrawlGame.languagePack.getUIString(ID).TEXT;
 
     protected static float boardY = Settings.HEIGHT / 2.0F + 540.0F * Settings.scale;
-    //protected static NitoriStoreTools.SpinningCardItems cards;
+    protected static ArrayList<QuestBoardQuest> questBoardQuests = new ArrayList<>();
     protected static final String questBoardImagePath = makeUIPath("quest_board.png");
     protected static Texture questBoardImg;
 
@@ -49,7 +52,6 @@ public class QuestBoardScreen extends CustomScreen {
         AbstractDungeon.overlayMenu.showBlackScreen();
         AbstractDungeon.overlayMenu.proceedButton.hide();
         AbstractDungeon.overlayMenu.cancelButton.show(TEXT[0]);
-        //cards = new NitoriStoreTools.SpinningCardItems();
 
         if (MathUtils.randomBoolean()) { CardCrawlGame.sound.play("MAP_OPEN", 0.1f);
         } else { CardCrawlGame.sound.play("MAP_OPEN_2", 0.1f); }
@@ -68,14 +70,18 @@ public class QuestBoardScreen extends CustomScreen {
     @Override
     public void update() {
         updateBoard();
-        //cards.update();
+        for (QuestBoardQuest questBoardQuest : questBoardQuests) {
+            questBoardQuest.update();
+        }
     }
 
     @Override
     public void render(SpriteBatch sb) {
         sb.setColor(Color.WHITE.cpy());
         sb.draw(questBoardImg, 0.0F, boardY, Settings.WIDTH, Settings.HEIGHT);
-        //cards.render(sb);
+        for (QuestBoardQuest questBoardQuest : questBoardQuests) {
+            questBoardQuest.render(sb);
+        }
     }
 
     @Override
@@ -88,14 +94,22 @@ public class QuestBoardScreen extends CustomScreen {
         return true;
     }
 
-    public void init() {
-
-    }
-
     protected static void updateBoard() {
         if(boardY != 0.0F) {
             boardY = MathUtils.lerp(boardY, Settings.HEIGHT / 2.0F - 540.0F * Settings.scale, Gdx.graphics.getDeltaTime() * 5.0F);
             if (boardY < 0.5F) { boardY = 0.0F; }
+        }
+    }
+
+    public static void init(ArrayList<AbstractQuest> quests) {
+        questBoardQuests.clear();
+        float xIncrease = 550.0F * Settings.xScale;
+        float x = (float) Settings.WIDTH / 10 + 25.0F * Settings.xScale;
+        float y = (float) Settings.HEIGHT / 2;
+        for (AbstractQuest quest : quests) {
+            QuestBoardQuest questBoardQuest = new QuestBoardQuest(quest, x ,y);
+            questBoardQuests.add(questBoardQuest);
+            x += xIncrease;
         }
     }
 }
