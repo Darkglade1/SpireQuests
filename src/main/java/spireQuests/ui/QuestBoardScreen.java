@@ -25,6 +25,7 @@ public class QuestBoardScreen extends CustomScreen {
     protected static ArrayList<QuestBoardQuest> questBoardQuests = new ArrayList<>();
     protected static final String questBoardImagePath = makeUIPath("quest_board.png");
     protected static Texture questBoardImg;
+    public static QuestBoardProp parentProp;
 
     public static class Enum {
         @SpireEnum
@@ -101,7 +102,8 @@ public class QuestBoardScreen extends CustomScreen {
         }
     }
 
-    public static void init(ArrayList<AbstractQuest> quests) {
+    public static void init(QuestBoardProp prop, ArrayList<AbstractQuest> quests) {
+        parentProp = prop;
         questBoardQuests.clear();
         float xIncrease = 550.0F * Settings.scale;
         float x = (float) Settings.WIDTH / 10 - 45.0F * Settings.scale;

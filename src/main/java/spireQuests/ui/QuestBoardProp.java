@@ -4,7 +4,6 @@ import basemod.BaseMod;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.megacrit.cardcrawl.cards.AbstractCard;
 import com.megacrit.cardcrawl.core.Settings;
 import com.megacrit.cardcrawl.dungeons.AbstractDungeon;
 import com.megacrit.cardcrawl.helpers.Hitbox;
@@ -22,13 +21,13 @@ public class QuestBoardProp {
     public static final float DRAW_X;
     public static final float DRAW_Y;
     public Hitbox hb;
-    private ArrayList<AbstractQuest> quests;
+    public ArrayList<AbstractQuest> quests;
     protected static final String questBoardPropImagePath = makeUIPath("bulletin_board.png");
-    private Texture sprite;
+    private final Texture sprite;
 
     public QuestBoardProp() {
         this.quests = new ArrayList<>();
-        // TODO select 3 random quests, 1 easy/normal, 1 hard/challenging, and 1 from any difficulty
+        // TODO select 3 random quests
         this.quests.add(new TestQuest());
         this.quests.add(new TestQuest());
         this.quests.add(new TestQuest());
@@ -40,7 +39,7 @@ public class QuestBoardProp {
     public void update() {
         this.hb.update();
         if ((this.hb.hovered && InputHelper.justClickedLeft || CInputActionSet.select.isJustPressed()) && !AbstractDungeon.isScreenUp && !AbstractDungeon.isFadingOut && !AbstractDungeon.player.viewingRelics) {
-            QuestBoardScreen.init(quests);
+            QuestBoardScreen.init(this, quests);
             BaseMod.openCustomScreen(QuestBoardScreen.Enum.QUEST_BOARD);
             this.hb.hovered = false;
         }
