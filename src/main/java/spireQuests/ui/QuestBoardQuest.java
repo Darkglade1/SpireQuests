@@ -22,15 +22,15 @@ public class QuestBoardQuest {
         this.y = y;
     }
 
-    public void render(SpriteBatch sb) {
+    public void render(SpriteBatch sb, float boardY) {
         sb.setColor(Color.WHITE);
-        sb.draw(ImageMaster.REWARD_SCREEN_SHEET, this.x, this.y - 350.0F, 306.0F, 358.0F, 512.0F, 716.0F, Settings.scale, Settings.scale, 0.0F, 0, 0, 612, 716, false, false);
-        sb.draw(ImageMaster.VICTORY_BANNER, this.x + 25.0F, this.y + 299.0F, 556.0F, 119.0F, 612.0F, 238.0F, Settings.scale, Settings.scale, 0.0F, 0, 0, 1112, 238, false, false);
-        FontHelper.renderFontCentered(sb, FontHelper.losePowerFont, this.quest.name, this.x + 185.0F * Settings.xScale, this.y + 330.0F * Settings.scale, Color.WHITE, 1.2f);
-        sb.draw(ImageMaster.REWARD_SCREEN_TAKE_BUTTON, this.x + 5.0F, this.y - 550.0F, 256.0F, 128.0F, 512.0F, 256.0F, Settings.scale, Settings.scale, 0.0F, 0, 0, 512, 256, false, false);
-        FontHelper.renderFontCentered(sb, FontHelper.buttonLabelFont, TEXT[1], this.x + 195.0F * Settings.xScale, this.y - 315.0F * Settings.yScale, Color.WHITE, 0.8F);
-        FontHelper.renderFontLeft(sb, FontHelper.cardDescFont_N, quest.getRequirementsText(), this.x + 25.0F * Settings.xScale, this.y + 165.0F * Settings.yScale, Color.WHITE);
-        FontHelper.renderFontLeft(sb, FontHelper.cardDescFont_N, quest.getRewardsText(), this.x + 25.0F * Settings.xScale, this.y - 60.0F * Settings.yScale, Color.WHITE);
+        sb.draw(ImageMaster.REWARD_SCREEN_SHEET, this.x, this.y - 350.0F * Settings.scale + boardY, 512.0F * Settings.scale, 716.0F * Settings.scale);
+        sb.draw(ImageMaster.VICTORY_BANNER, this.x - 50.0F * Settings.scale, this.y + 199.0F * Settings.scale + boardY, 612.0F * Settings.scale, 238.0F * Settings.scale);
+        FontHelper.renderFontCentered(sb, FontHelper.losePowerFont, this.quest.name, this.x + 260.0F * Settings.scale, this.y + 340.0F * Settings.scale + boardY, Color.WHITE, 1.2f);
+        sb.draw(ImageMaster.REWARD_SCREEN_TAKE_BUTTON, this.x + 5.0F, this.y - 445.0F * Settings.scale + boardY, 512.0F * Settings.scale, 256.0F * Settings.scale);
+        FontHelper.renderFontCentered(sb, FontHelper.buttonLabelFont, TEXT[1], this.x + 260.0F * Settings.scale, this.y - 315.0F * Settings.scale + boardY, Color.WHITE, 0.8F);
+        FontHelper.renderFontLeft(sb, FontHelper.cardDescFont_N, quest.getRequirementsText(), this.x + 55.0F * Settings.scale, this.y + 165.0F * Settings.scale + boardY, Color.WHITE);
+        FontHelper.renderFontLeft(sb, FontHelper.cardDescFont_N, quest.getRewardsText(), this.x + 55.0F * Settings.scale, this.y - 60.0F * Settings.scale + boardY, Color.WHITE);
     }
 
     public void update() {

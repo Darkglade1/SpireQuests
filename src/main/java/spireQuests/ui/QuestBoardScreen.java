@@ -80,7 +80,7 @@ public class QuestBoardScreen extends CustomScreen {
         sb.setColor(Color.WHITE.cpy());
         sb.draw(questBoardImg, 0.0F, boardY, Settings.WIDTH, Settings.HEIGHT);
         for (QuestBoardQuest questBoardQuest : questBoardQuests) {
-            questBoardQuest.render(sb);
+            questBoardQuest.render(sb, boardY);
         }
     }
 
@@ -103,8 +103,8 @@ public class QuestBoardScreen extends CustomScreen {
 
     public static void init(ArrayList<AbstractQuest> quests) {
         questBoardQuests.clear();
-        float xIncrease = 550.0F * Settings.xScale;
-        float x = (float) Settings.WIDTH / 10 + 25.0F * Settings.xScale;
+        float xIncrease = 550.0F * Settings.scale;
+        float x = (float) Settings.WIDTH / 10 - 45.0F * Settings.scale;
         float y = (float) Settings.HEIGHT / 2;
         for (AbstractQuest quest : quests) {
             QuestBoardQuest questBoardQuest = new QuestBoardQuest(quest, x ,y);
