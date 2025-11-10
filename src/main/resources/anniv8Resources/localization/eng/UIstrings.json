@@ -17,7 +17,8 @@
     "TEXT": [
       "Cancel",
       "Pick up Quest",
-      ""
+      "You can select ",
+      " more quest(s)"
     ]
   }
 }

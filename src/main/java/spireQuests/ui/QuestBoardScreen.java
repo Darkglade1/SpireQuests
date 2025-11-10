@@ -10,6 +10,7 @@ import com.evacipated.cardcrawl.modthespire.lib.SpireEnum;
 import com.megacrit.cardcrawl.core.CardCrawlGame;
 import com.megacrit.cardcrawl.core.Settings;
 import com.megacrit.cardcrawl.dungeons.AbstractDungeon;
+import com.megacrit.cardcrawl.helpers.FontHelper;
 import spireQuests.quests.AbstractQuest;
 import spireQuests.util.TexLoader;
 
@@ -83,6 +84,7 @@ public class QuestBoardScreen extends CustomScreen {
         for (QuestBoardQuest questBoardQuest : questBoardQuests) {
             questBoardQuest.render(sb, boardY);
         }
+        FontHelper.renderFontCentered(sb, FontHelper.losePowerFont, TEXT[2] + parentProp.numQuestsPickable + TEXT[3], (float) Settings.WIDTH / 2, AbstractDungeon.floorY - 250.0F * Settings.scale + boardY, Color.WHITE, 1.2f);
     }
 
     @Override
