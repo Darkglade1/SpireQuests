@@ -36,14 +36,14 @@ public class QuestBoardQuest {
             sb.draw(ImageMaster.REWARD_SCREEN_SHEET, this.x, this.y - 350.0F * Settings.scale + boardY, 512.0F * Settings.scale, 716.0F * Settings.scale);
             sb.draw(ImageMaster.VICTORY_BANNER, this.x - 50.0F * Settings.scale, this.y + 199.0F * Settings.scale + boardY, 612.0F * Settings.scale, 238.0F * Settings.scale);
             FontHelper.renderFontCentered(sb, FontHelper.losePowerFont, this.quest.name, this.x + 260.0F * Settings.scale, this.y + 340.0F * Settings.scale + boardY, Color.WHITE, 1.2f);
-            sb.draw(ImageMaster.REWARD_SCREEN_TAKE_BUTTON, this.x + 5.0F * Settings.scale, this.y - 445.0F * Settings.scale + boardY, 512.0F * Settings.scale, 256.0F * Settings.scale);
             this.hb.move(this.x + 5.0F * Settings.scale + (512.0F / 2) * Settings.scale, this.y - 445.0F * Settings.scale + boardY + (256.0F / 2) * Settings.scale);
-            if (this.hb.hovered) {
-                sb.setBlendFunction(770, 1);
+            if (QuestBoardScreen.parentProp.numQuestsPickable <= 0) {
+                sb.setColor(Color.GRAY);
+            } else if (this.hb.hovered) {
                 sb.setColor(Color.GOLD);
-                sb.draw(ImageMaster.REWARD_SCREEN_TAKE_BUTTON, this.x + 5.0F * Settings.scale, this.y - 445.0F * Settings.scale + boardY, 512.0F * Settings.scale, 256.0F * Settings.scale);
-                sb.setBlendFunction(770, 771);
             }
+            sb.draw(ImageMaster.REWARD_SCREEN_TAKE_BUTTON, this.x + 5.0F * Settings.scale, this.y - 445.0F * Settings.scale + boardY, 512.0F * Settings.scale, 256.0F * Settings.scale);
+            sb.setColor(Color.WHITE);
             FontHelper.renderFontCentered(sb, FontHelper.buttonLabelFont, TEXT[1], this.x + 260.0F * Settings.scale, this.y - 315.0F * Settings.scale + boardY, Color.WHITE, 0.8F);
             FontHelper.renderFontLeft(sb, FontHelper.cardDescFont_N, quest.getRequirementsText(), this.x + 55.0F * Settings.scale, this.y + 165.0F * Settings.scale + boardY, Color.WHITE);
             FontHelper.renderFontLeft(sb, FontHelper.cardDescFont_N, quest.getRewardsText(), this.x + 55.0F * Settings.scale, this.y - 60.0F * Settings.scale + boardY, Color.WHITE);
@@ -53,15 +53,18 @@ public class QuestBoardQuest {
     public void update() {
         if (!taken) {
             this.hb.update();
-            if (this.hb.justHovered) {
-                CardCrawlGame.sound.playV("UI_HOVER", 0.75F);
-            }
-            if ((this.hb.hovered && InputHelper.justClickedLeft || CInputActionSet.select.isJustPressed()) && !AbstractDungeon.isScreenUp && !AbstractDungeon.isFadingOut && !AbstractDungeon.player.viewingRelics) {
-                CardCrawlGame.sound.play("SHOP_PURCHASE", 0.1F);
-                QuestManager.startQuest(quest);
-                QuestBoardScreen.parentProp.quests.remove(quest);
-                taken = true;
-                this.hb.hovered = false;
+            if (QuestBoardScreen.parentProp.numQuestsPickable > 0) {
+                if (this.hb.justHovered) {
+                    CardCrawlGame.sound.playV("UI_HOVER", 0.75F);
+                }
+                if ((this.hb.hovered && InputHelper.justClickedLeft || CInputActionSet.select.isJustPressed()) && !AbstractDungeon.isScreenUp && !AbstractDungeon.isFadingOut && !AbstractDungeon.player.viewingRelics) {
+                    CardCrawlGame.sound.play("SHOP_PURCHASE", 0.1F);
+                    QuestManager.startQuest(quest);
+                    QuestBoardScreen.parentProp.quests.remove(quest);
+                    QuestBoardScreen.parentProp.numQuestsPickable--;
+                    taken = true;
+                    this.hb.hovered = false;
+                }
             }
         }
     }

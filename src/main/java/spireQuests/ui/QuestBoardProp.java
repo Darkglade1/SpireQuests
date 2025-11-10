@@ -24,6 +24,7 @@ public class QuestBoardProp {
     public ArrayList<AbstractQuest> quests;
     protected static final String questBoardPropImagePath = makeUIPath("bulletin_board.png");
     private final Texture sprite;
+    public int numQuestsPickable;
 
     public QuestBoardProp() {
         this.quests = new ArrayList<>();
@@ -31,6 +32,7 @@ public class QuestBoardProp {
         this.quests.add(new TestQuest());
         this.quests.add(new TestQuest());
         this.quests.add(new TestQuest());
+        numQuestsPickable = 2;
         this.sprite = TexLoader.getTexture(questBoardPropImagePath);
         this.hb = new Hitbox(sprite.getWidth() * Settings.xScale, sprite.getHeight() * Settings.yScale);
         this.hb.move(DRAW_X + ((float) sprite.getWidth() / 2) * Settings.scale, DRAW_Y + ((float) sprite.getHeight() / 2) * Settings.scale);
