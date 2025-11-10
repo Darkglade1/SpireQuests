@@ -28,7 +28,6 @@ public class QuestBoardQuest {
         this.x = x;
         this.y = y;
         this.hb = new Hitbox(300.0F * Settings.scale, 64.0F * Settings.scale);
-        this.hb.move(this.x + 5.0F * Settings.scale + (512.0F / 2) * Settings.scale, this.y - 445.0F * Settings.scale + (256.0F / 2) * Settings.scale);
     }
 
     public void render(SpriteBatch sb, float boardY) {
@@ -38,6 +37,7 @@ public class QuestBoardQuest {
             sb.draw(ImageMaster.VICTORY_BANNER, this.x - 50.0F * Settings.scale, this.y + 199.0F * Settings.scale + boardY, 612.0F * Settings.scale, 238.0F * Settings.scale);
             FontHelper.renderFontCentered(sb, FontHelper.losePowerFont, this.quest.name, this.x + 260.0F * Settings.scale, this.y + 340.0F * Settings.scale + boardY, Color.WHITE, 1.2f);
             sb.draw(ImageMaster.REWARD_SCREEN_TAKE_BUTTON, this.x + 5.0F * Settings.scale, this.y - 445.0F * Settings.scale + boardY, 512.0F * Settings.scale, 256.0F * Settings.scale);
+            this.hb.move(this.x + 5.0F * Settings.scale + (512.0F / 2) * Settings.scale, this.y - 445.0F * Settings.scale + boardY + (256.0F / 2) * Settings.scale);
             if (this.hb.hovered) {
                 sb.setBlendFunction(770, 1);
                 sb.setColor(Color.GOLD);
