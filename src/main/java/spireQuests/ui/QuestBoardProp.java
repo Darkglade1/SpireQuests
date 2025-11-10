@@ -35,7 +35,7 @@ public class QuestBoardProp {
         numQuestsPickable = 2;
         this.sprite = TexLoader.getTexture(questBoardPropImagePath);
         this.hb = new Hitbox(sprite.getWidth() * Settings.xScale, sprite.getHeight() * Settings.yScale);
-        this.hb.move(DRAW_X + ((float) sprite.getWidth() / 2) * Settings.scale, DRAW_Y + ((float) sprite.getHeight() / 2) * Settings.scale);
+        this.hb.move(DRAW_X + ((float) sprite.getWidth() / 2) * Settings.xScale, DRAW_Y + ((float) sprite.getHeight() / 2) * Settings.yScale);
     }
 
     public void update() {
@@ -49,11 +49,11 @@ public class QuestBoardProp {
 
     public void render(SpriteBatch sb) {
         sb.setColor(Color.WHITE);
-        sb.draw(sprite, DRAW_X, DRAW_Y, sprite.getWidth() * Settings.scale, sprite.getHeight() * Settings.scale);
+        sb.draw(sprite, DRAW_X, DRAW_Y, sprite.getWidth() * Settings.xScale, sprite.getHeight() * Settings.yScale);
         if (this.hb.hovered) {
             sb.setBlendFunction(770, 1);
             sb.setColor(Color.GOLD);
-            sb.draw(sprite, DRAW_X, DRAW_Y, sprite.getWidth() * Settings.scale, sprite.getHeight() * Settings.scale);
+            sb.draw(sprite, DRAW_X, DRAW_Y, sprite.getWidth() * Settings.xScale, sprite.getHeight() * Settings.yScale);
             sb.setBlendFunction(770, 771);
         }
         this.hb.render(sb);
@@ -61,6 +61,6 @@ public class QuestBoardProp {
 
     static {
         DRAW_X = (float)Settings.WIDTH * 0.5F - 300.0F * Settings.xScale;
-        DRAW_Y = AbstractDungeon.floorY + 109.0F * Settings.scale;
+        DRAW_Y = AbstractDungeon.floorY + 109.0F * Settings.yScale;
     }
 }

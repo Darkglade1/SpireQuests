@@ -22,7 +22,7 @@ public class QuestBoardScreen extends CustomScreen {
     public static final String ID = spireQuests.Anniv8Mod.makeID("QuestBoard");
     public static final String[] TEXT = CardCrawlGame.languagePack.getUIString(ID).TEXT;
 
-    protected static float boardY = Settings.HEIGHT / 2.0F + 540.0F * Settings.scale;
+    protected static float boardY;
     protected static ArrayList<QuestBoardQuest> questBoardQuests = new ArrayList<>();
     protected static final String questBoardImagePath = makeUIPath("quest_board.png");
     protected static Texture questBoardImg;
@@ -84,7 +84,7 @@ public class QuestBoardScreen extends CustomScreen {
         for (QuestBoardQuest questBoardQuest : questBoardQuests) {
             questBoardQuest.render(sb, boardY);
         }
-        FontHelper.renderFontCentered(sb, FontHelper.losePowerFont, TEXT[2] + parentProp.numQuestsPickable + TEXT[3], (float) Settings.WIDTH / 2, AbstractDungeon.floorY - 250.0F * Settings.scale + boardY, Color.WHITE, 1.2f);
+        FontHelper.renderFontCentered(sb, FontHelper.losePowerFont, TEXT[2] + parentProp.numQuestsPickable + TEXT[3], (float) Settings.WIDTH / 2, AbstractDungeon.floorY - 250.0F * Settings.yScale + boardY, Color.WHITE, 1.2f);
     }
 
     @Override
@@ -99,7 +99,7 @@ public class QuestBoardScreen extends CustomScreen {
 
     protected static void updateBoard() {
         if(boardY != 0.0F) {
-            boardY = MathUtils.lerp(boardY, Settings.HEIGHT / 2.0F - 540.0F * Settings.scale, Gdx.graphics.getDeltaTime() * 5.0F);
+            boardY = MathUtils.lerp(boardY, Settings.HEIGHT / 2.0F - 540.0F * Settings.yScale, Gdx.graphics.getDeltaTime() * 5.0F);
             if (boardY < 0.5F) { boardY = 0.0F; }
         }
     }
@@ -107,8 +107,8 @@ public class QuestBoardScreen extends CustomScreen {
     public static void init(QuestBoardProp prop, ArrayList<AbstractQuest> quests) {
         parentProp = prop;
         questBoardQuests.clear();
-        float xIncrease = 550.0F * Settings.scale;
-        float x = (float) Settings.WIDTH / 10 - 45.0F * Settings.scale;
+        float xIncrease = 550.0F * Settings.xScale;
+        float x = (float) Settings.WIDTH / 10 - 45.0F * Settings.xScale;
         float y = (float) Settings.HEIGHT / 2;
         for (AbstractQuest quest : quests) {
             QuestBoardQuest questBoardQuest = new QuestBoardQuest(quest, x ,y);
