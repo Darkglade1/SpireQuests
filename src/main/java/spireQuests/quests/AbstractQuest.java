@@ -140,7 +140,7 @@ public abstract class AbstractQuest implements Comparable<AbstractQuest> {
         if (rewardsText == null) {
             StringBuilder sb = new StringBuilder();
             for (QuestReward reward : questRewards) {
-                sb.append(reward.rewardText).append('\n');
+                sb.append(reward.rewardText).append(" NL ");
             }
             rewardsText = sb.toString();
         }

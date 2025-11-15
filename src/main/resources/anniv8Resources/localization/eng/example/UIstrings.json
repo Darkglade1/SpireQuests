@@ -2,12 +2,12 @@
   "${ModID}:TestQuest": {
     "TEXT": [
       "THE QUEST",
-      "THE DESCRIPTION",
+      "THE DESCRIPTION THAT IS INCREDIBLY LARGE NL AND REALLY NEEDS TO BE BROKEN UP I THINK AND HOPE WOOOOOOOOOOOO, HELL YEAH! NL NL DOES THIS WORK!?",
       "ME"
     ],
     "EXTRA_TEXT": [
       "Add 5 Common Cards in a row",
-      "Obtain a Rare Card"
+      "Obtain a Burning Blood and 100 Gold."
     ]
   }
 }
