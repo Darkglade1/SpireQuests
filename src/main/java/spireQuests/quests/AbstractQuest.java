@@ -40,6 +40,7 @@ public abstract class AbstractQuest implements Comparable<AbstractQuest> {
     public String description;
     public String author;
     public float width = 0;
+    protected float titleScale = 1.2f; // change as needed for longer titles
 
     public boolean useDefaultReward;
     public List<QuestReward> questRewards;
@@ -121,6 +122,10 @@ public abstract class AbstractQuest implements Comparable<AbstractQuest> {
         } else {
             return hpCost;
         }
+    }
+
+    public float getTitleScale() {
+        return titleScale;
     }
 
     //override if you want to set up the text differently

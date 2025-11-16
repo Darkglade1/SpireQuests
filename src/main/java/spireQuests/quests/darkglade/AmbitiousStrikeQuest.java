@@ -12,8 +12,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Random;
 
-public class AmbitiousStrike extends AbstractQuest {
-    public AmbitiousStrike() {
+public class AmbitiousStrikeQuest extends AbstractQuest {
+    public AmbitiousStrikeQuest() {
         super(QuestType.SHORT, QuestDifficulty.HARD);
         new TriggeredUpdateTracker<>(QuestTriggers.VICTORY, 0, 1, () -> {
             AbstractCard lastCard = AbstractDungeon.actionManager.cardsPlayedThisCombat.get(AbstractDungeon.actionManager.cardsPlayedThisCombat.size() - 1);
@@ -25,6 +25,7 @@ public class AmbitiousStrike extends AbstractQuest {
 
         useDefaultReward = false;
         rewardsText = localization.EXTRA_TEXT[1];
+        titleScale = 1.0f;
     }
 
     @Override

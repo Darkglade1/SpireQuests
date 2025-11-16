@@ -1,13 +1,13 @@
 {
-  "${ModID}:AmbitiousStrike": {
+  "${ModID}:AmbitiousStrikeQuest": {
     "TEXT": [
       "Ambitious Strike",
-      "End an Elite encounter with your last played card being a basic Strike.",
+      "End an Elite encounter with your last played card being a starter #yStrike.",
       "Darkglade"
     ],
     "EXTRA_TEXT": [
-      "Elite encounter with last played card being a basic Strike",
-      "Upgrade a random Attack."
+      "Elite encounter with last played card being a starter Strike",
+      "Upgrade a random #yAttack."
     ]
   }
 }

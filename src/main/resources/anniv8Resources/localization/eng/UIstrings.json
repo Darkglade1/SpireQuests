@@ -20,7 +20,9 @@
       "Pick up Quest",
       "You can select ",
       " more quest(s)",
-      "By: "
+      "By: ",
+      "#yQuest: NL ",
+      "#gRewards: NL "
       ]
   },
   "${ModID}:AbstractQuest": {
