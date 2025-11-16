@@ -20,7 +20,8 @@
       "Pick up Quest",
       "You can select ",
       " more quest(s)",
-      "By: "
+      "By: ",
+      "Quest log is full! The next one will replace: %s"
       ]
   },
   "${ModID}:AbstractQuest": {
