@@ -2,12 +2,15 @@ package spireQuests;
 
 import basemod.AutoAdd;
 import basemod.BaseMod;
+import basemod.ModLabeledToggleButton;
 import basemod.ModPanel;
+import basemod.devcommands.ConsoleCommand;
 import basemod.helpers.RelicType;
 import basemod.interfaces.*;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.evacipated.cardcrawl.mod.stslib.Keyword;
 import com.evacipated.cardcrawl.modthespire.Loader;
 import com.evacipated.cardcrawl.modthespire.lib.SpireConfig;
@@ -15,6 +18,8 @@ import com.evacipated.cardcrawl.modthespire.lib.SpireInitializer;
 import com.google.gson.Gson;
 import com.megacrit.cardcrawl.core.CardCrawlGame;
 import com.megacrit.cardcrawl.core.Settings;
+import com.megacrit.cardcrawl.dungeons.AbstractDungeon;
+import com.megacrit.cardcrawl.helpers.FontHelper;
 import com.megacrit.cardcrawl.localization.*;
 import com.megacrit.cardcrawl.unlock.UnlockTracker;
 import javassist.CtClass;
@@ -23,15 +28,24 @@ import org.apache.logging.log4j.Logger;
 import spireQuests.abstracts.AbstractSQRelic;
 import spireQuests.cardvars.SecondDamage;
 import spireQuests.cardvars.SecondMagicNumber;
+import spireQuests.commands.AddQuestCommand;
+import spireQuests.commands.SpawnQuestCommand;
+import spireQuests.patches.QuestRunHistoryPatch;
 import spireQuests.quests.AbstractQuest;
+import spireQuests.quests.QuestGenerator;
 import spireQuests.quests.QuestManager;
+import spireQuests.rewards.SingleCardReward;
+import spireQuests.ui.QuestBoardScreen;
 import spireQuests.util.TexLoader;
 
+import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
 import java.util.function.Consumer;
+
+import static spireQuests.rewards.RewardEnums.SQ_SINGLECARDREWARD;
 
 @SuppressWarnings({"unused"})
 @SpireInitializer
@@ -43,7 +57,8 @@ public class Anniv8Mod implements
         PostInitializeSubscriber,
         AddAudioSubscriber,
         PostDungeonInitializeSubscriber,
-        StartGameSubscriber {
+        StartGameSubscriber,
+        PostRenderSubscriber{
 
     public static final Logger logger = LogManager.getLogger("SpireQuests");
 
@@ -52,6 +67,8 @@ public class Anniv8Mod implements
     };
 
     public static Anniv8Mod thismod;
+    public static final String HARD_MODE_CONFIG = "hardModeConfig";
+    public static boolean hardModeConfig = false;
     public static SpireConfig modConfig = null;
 
     public static final String modID = "anniv8";
@@ -88,40 +105,16 @@ public class Anniv8Mod implements
         return modID + "Resources/images/" + resourcePath;
     }
 
+    public static String makeContributionPath(String packageName, String resourcePath) {
+        return modID + "Resources/images/" + packageName + "/" + resourcePath;
+    }
+
     public static String makeUIPath(String resourcePath) {
         return modID + "Resources/images/ui/" + resourcePath;
     }
 
-    public static String makeRelicPath(String resourcePath) {
-        return modID + "Resources/images/relics/" + resourcePath;
-    }
-
-    public static String makeMonsterPath(String resourcePath) {
-        return modID + "Resources/images/monsters/" + resourcePath;
-    }
-
-    public static String makePowerPath(String resourcePath) {
-        return modID + "Resources/images/powers/" + resourcePath;
-    }
-
-    public static String makeCardPath(String resourcePath) {
-        return modID + "Resources/images/cards/" + resourcePath;
-    }
-
     public static String makeShaderPath(String resourcePath) {
         return modID + "Resources/shaders/" + resourcePath;
-    }
-
-    public static String makeOrbPath(String resourcePath) {
-        return modID + "Resources/images/orbs/" + resourcePath;
-    }
-
-    public static String makeEventPath(String resourcePath) {
-        return modID + "Resources/images/events/" + resourcePath;
-    }
-
-    public static String makeBackgroundPath(String resourcePath) {
-        return modID + "Resources/images/backgrounds/" + resourcePath;
     }
 
     public static void initialize() {
@@ -129,6 +122,7 @@ public class Anniv8Mod implements
 
         try {
             Properties defaults = new Properties();
+            defaults.put(HARD_MODE_CONFIG, false);
             modConfig = new SpireConfig(modID, "anniv8Config", defaults);
         } catch (Exception e) {
             e.printStackTrace();
@@ -167,10 +161,17 @@ public class Anniv8Mod implements
         initializedStrings = true;
 
         QuestManager.initialize();
+        QuestGenerator.initialize();
+        QuestRunHistoryPatch.initialize();
         addPotions();
         addSaveFields();
-        initializeConfig();
         initializeSavedData();
+        initializeConfig();
+
+        BaseMod.addCustomScreen(new QuestBoardScreen());
+
+        ConsoleCommand.addCommand("addquest", AddQuestCommand.class);
+        ConsoleCommand.addCommand("spawnquest", SpawnQuestCommand.class);
     }
 
     public static void addPotions() {
@@ -318,6 +319,15 @@ public class Anniv8Mod implements
         }
     }
 
+    public static SingleCardReward hoverRewardWorkaround;
+    @Override
+    public void receivePostRender(SpriteBatch sb) {
+        if(hoverRewardWorkaround != null) {
+            hoverRewardWorkaround.renderCardOnHover(sb);
+            hoverRewardWorkaround = null;
+        }
+    }
+
     private ModPanel settingsPanel;
 
 
@@ -327,11 +337,22 @@ public class Anniv8Mod implements
         Texture badge = TexLoader.getTexture(makeImagePath("ui/badge.png"));
 
         settingsPanel = new ModPanel();
+        ModLabeledToggleButton toggleHardModeButton = new ModLabeledToggleButton(configStrings.TEXT[3],
+                350.0f, 700.0f, Settings.CREAM_COLOR, FontHelper.charDescFont,
+                hardModeConfig,
+                settingsPanel,
+                (label) -> {},
+                (button) -> {
+                    hardModeConfig = button.enabled;
+                    saveConfig();
+                });
+        settingsPanel.addUIElement(toggleHardModeButton);
 
         BaseMod.registerModBadge(badge, configStrings.TEXT[0], configStrings.TEXT[1], configStrings.TEXT[2], settingsPanel);
     }
 
     private void initializeSavedData() {
+        hardModeConfig = modConfig.getBool(HARD_MODE_CONFIG);
     }
 
     public static void addSaveFields() {
@@ -341,6 +362,19 @@ public class Anniv8Mod implements
     @Override
     public void receiveStartGame() {
 
+    }
+
+    public static boolean questsHaveCost() {
+        return hardModeConfig;
+    }
+
+    public static void saveConfig() {
+        try {
+            modConfig.setBool(HARD_MODE_CONFIG, hardModeConfig);
+            modConfig.save();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
 }
