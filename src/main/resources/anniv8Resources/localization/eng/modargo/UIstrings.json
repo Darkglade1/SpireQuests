@@ -54,5 +54,17 @@
       "Minerals gathered",
       "Gems gathered"
     ]
+  },
+  "${ModID}:MulticlassQuest": {
+    "TEXT": [
+      "Multiclass",
+      "Cards from another character will show up in your card rewards. Add #b3 of their cards to your deck to embrace your new techniques.",
+      "modargo",
+      "Multiclass: %s",
+      "Cards from %s will show up in your card rewards. Add #b3 of their cards to your deck to embrace your new techniques."
+    ],
+    "EXTRA_TEXT": [
+      "Cards added"
+    ]
   }
 }

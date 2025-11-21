@@ -33,5 +33,13 @@
     "DESCRIPTIONS": [
       "At the start of each combat, choose #b1 of #b3 #yUncommon cards to add into your hand."
     ]
+  },
+  "${ModID}:MulticlassEmblem": {
+    "NAME": "Multiclass Emblem",
+    "FLAVOR": "A symbol of expertise.",
+    "DESCRIPTIONS": [
+      "Combat reward screens contain cards from another character. Whenever you add one of their cards to your deck, gain #b%d #yGold.",
+      "Combat reward screens contain cards from %s. Whenever you add a card from %s to your deck, gain #b%d #yGold."
+    ]
   }
 }
