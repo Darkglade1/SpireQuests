@@ -37,7 +37,7 @@ public class MulticlassQuest extends AbstractQuest {
             List<String> excludedCharacters = Arrays.asList(AbstractDungeon.player.chosenClass.name(), "THE_PACKMASTER", "THE_SISTERS", "Librarian", "THE_RAINBOW");
             List<AbstractPlayer.PlayerClass> playerClasses = CardCrawlGame.characterManager.getAllCharacters().stream()
                     .map(c -> c.chosenClass)
-                    .filter(pc -> !excludedCharacters.contains(AbstractDungeon.player.chosenClass.name()))
+                    .filter(pc -> !excludedCharacters.contains(pc.name()))
                     .collect(Collectors.toList());
             playerClass = playerClasses.get(rng.random(playerClasses.size() - 1));
         }
