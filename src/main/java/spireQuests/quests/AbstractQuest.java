@@ -4,8 +4,9 @@ import com.megacrit.cardcrawl.cards.AbstractCard;
 import com.megacrit.cardcrawl.core.CardCrawlGame;
 import com.megacrit.cardcrawl.dungeons.AbstractDungeon;
 import com.megacrit.cardcrawl.helpers.PowerTip;
-import com.megacrit.cardcrawl.localization.UIStrings;
 import spireQuests.Anniv8Mod;
+import spireQuests.util.QuestStrings;
+import spireQuests.util.QuestStringsUtils;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
@@ -38,7 +39,7 @@ public abstract class AbstractQuest implements Comparable<AbstractQuest> {
     public final QuestType type;
     public final QuestDifficulty difficulty;
 
-    protected final UIStrings localization;
+    protected final QuestStrings questStrings;
     public String name;
     public String description;
     public String author;
@@ -89,9 +90,9 @@ public abstract class AbstractQuest implements Comparable<AbstractQuest> {
 
         complete = false;
 
-        localization = CardCrawlGame.languagePack.getUIString(id);
-        if (localization == null) {
-            throw new RuntimeException("Localization for the quest " + id + " not found!");
+        questStrings = QuestStringsUtils.getQuestString(id);
+        if (questStrings == null) {
+            throw new RuntimeException("QuestStrings for the quest " + id + " not found!");
         }
         setText();
     }
@@ -122,9 +123,10 @@ public abstract class AbstractQuest implements Comparable<AbstractQuest> {
 
     //override if you want to set up the text differently
     protected void setText() {
-        name = localization.TEXT[0];
-        description = localization.TEXT[1];
-        author = localization.TEXT[2];
+        name = questStrings.TITLE;
+        description = questStrings.DESCRIPTION;
+        author = questStrings.AUTHOR;
+        rewardsText = questStrings.REWARD; // questStrings.REWARD will be null and set later unless you provide it in the json
     }
 
     //override if you want to set up the text differently
@@ -186,11 +188,10 @@ public abstract class AbstractQuest implements Comparable<AbstractQuest> {
         trackers.add(questTracker);
 
         if (!questTracker.hidden) {
-            if (trackerTextIndex >= localization.EXTRA_TEXT.length) {
-                throw new RuntimeException("Quest " + id + " needs more entries in EXTRA_TEXT for its trackers");
+            if (trackerTextIndex >= questStrings.TRACKER_TEXT.length) {
+                throw new RuntimeException("Quest " + id + " needs more entries in TRACKER_TEXT for its trackers");
             }
-            questTracker.text = localization.EXTRA_TEXT[trackerTextIndex];
-            ++trackerTextIndex;
+            questTracker.text = questStrings.TRACKER_TEXT[trackerTextIndex];
         }
 
         if (questTracker.trigger != null) triggers.add(questTracker.trigger);
