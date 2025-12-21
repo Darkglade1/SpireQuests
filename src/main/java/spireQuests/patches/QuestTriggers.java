@@ -45,12 +45,10 @@ public class QuestTriggers {
     public static final Trigger<Void> COMBAT_END = new Trigger<>();
     public static final Trigger<AbstractPotion> USE_POTION = new Trigger<>();
 
-    public static final Trigger<Void> IMPENDING_DAY_KILL = new Trigger<>();
     public static final Trigger<AbstractOrb> CHANNEL_ORB = new Trigger<>();
     public static final Trigger<AbstractOrb> EVOKE_ORB = new Trigger<>();
     public static final Trigger<Integer> ACT_CHANGE = new Trigger<>();
     public static final Trigger<AbstractChest> CHEST_OPENED = new Trigger<>(); //NOTE: This includes both normal and boss chests.
-
 
     public static final Trigger<Integer> HEALTH_HEALED = new Trigger<>();
     public static final Trigger<Void> MAX_HEALTH_CHANGED = new Trigger<>();
